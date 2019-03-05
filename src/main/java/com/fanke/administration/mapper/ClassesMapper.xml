@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fanke.administration.mapper.ClassesMapper">
+    <!--增加班级-->
+    <insert id="insertCla" parameterType="classes">
+    INSERT INTO classes(clas_name,clas_num,stage) values(#{clasName},#{clasNum},#{stage})
+    </insert>
+
+
+    <resultMap type="classes" id="ClasList">
+        <result property="clasId" column="clas_id"/>
+        <result property="clasName" column="clas_name"/>
+        <result property="clasNum" column="clas_num"/>
+        <result property="stage" column="stage"/>
+        <result property="ups" column="ups"/>
+    </resultMap>
+
+
+    <!--修改班级信息-->
+    <update id="updateCla" parameterType="classes">
+        UPDATE classes
+        <trim prefix="set" suffixOverrides=",">
+            <if test="clasName!=null and clasName!=''">
+                clas_name=#{clasName},
+            </if>
+            <if test="clasNum!=null and clasNum!=''">
+                clas_num=#{clasNum},
+            </if>
+            <if test="stage!=null and stage!=''">
+                stage=#{stage},
+            </if>
+            <if test="ups==0">
+                ups=#{ups},
+            </if>
+        </trim>
+        where clas_id=#{clasId}
+    </update>
+
+
+    <!--根据id获取班级信息-->
+    <select id="selectClaById" resultMap="ClasList" parameterType="int">
+    SELECT * FROM classes where clas_id=#{clasId}
+    </select>
+
+
+    <!--分页查询-->
+    <select id="selectCla" resultMap="ClasList">
+        SELECT * FROM classes
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="stage != null and stage!=''">
+                and stage=#{stage}
+            </if>
+            <if test="clasName != null and clasName!=''">
+                and clas_name LIKE CONCAT('%',#{clasName},'%')
+            </if>
+            and ups=1
+        </trim>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!--查询总数量-->
+    <select id="selectClaCount" resultType="int">
+        SELECT COUNT(1) FROM classes
+    </select>
+
+    <!--查询全部数据-->
+    <select id="selectAll" resultMap="ClasList">
+        SELECT * FROM classes
+    </select>
+</mapper>

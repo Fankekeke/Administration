@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fanke.administration.mapper.CurriculumMapper">
+    <!--添加课程-->
+    <insert id="insertCur" parameterType="curriculum">
+    INSERT INTO curriculum(cur_name,stage,chapter,cur_time) values(#{curName},#{stage},#{chapter},#{curTime})
+    </insert>
+
+
+    <resultMap type="curriculum" id="CurList">
+        <result property="curId" column="cur_id"/>
+        <result property="curName" column="cur_name"/>
+        <result property="stage" column="stage"/>
+        <result property="chapter" column="chapter"/>
+        <result property="curTime" column="cur_time"/>
+        <result property="ups" column="ups"/>
+    </resultMap>
+
+
+
+    <!--修改课程-->
+    <update id="updateCur" parameterType="curriculum">
+        UPDATE curriculum
+        <trim prefix="set" suffixOverrides=",">
+            <if test="curName!=null and curName!=''">
+                cur_name=#{curName},
+            </if>
+            <if test="stage!=null and stage!=''">
+                stage=#{stage},
+            </if>
+            <if test="chapter!=null and chapter!=''">
+                chapter=#{chapter},
+            </if>
+            <if test="curTime!=0">
+                cur_time=#{curTime},
+            </if>
+            <if test="ups==0">
+                ups=#{ups},
+            </if>
+        </trim>
+        where cur_id=#{curId}
+    </update>
+
+
+    <!--根据id获取课程-->
+    <select id="selectCurById" resultMap="CurList" parameterType="int">
+    SELECT * FROM curriculum where cur_id=#{curId}
+    </select>
+
+
+    <!--分页查询-->
+    <select id="selectCur" resultMap="CurList">
+        SELECT * FROM curriculum
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="stage != null and stage!=''">
+                and stage=#{stage}
+            </if>
+            <if test="curName != null and curName!=''">
+                and cur_name LIKE CONCAT('%',#{curName},'%')
+            </if>
+            and ups=1
+        </trim>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!--查询总数量-->
+    <select id="selectCurCount" resultType="int">
+    SELECT COUNT(1) FROM curriculum
+    </select>
+
+    <!--查询全部-->
+    <select id="selectAll" resultMap="CurList">
+        SELECT * FROM curriculum
+    </select>
+</mapper>

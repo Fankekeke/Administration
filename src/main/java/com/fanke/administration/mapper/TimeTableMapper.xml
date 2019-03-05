@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fanke.administration.mapper.TimeTableMapper">
+    <!--添加课表-->
+    <insert id="insertTable" parameterType="timeTable">
+    INSERT INTO timeTable(room_id,tea_id,clas_id,cur_id,tab_time,morning) values(#{roomId},#{teaId},#{clasId},#{curId},#{tabTime},#{morning})
+    </insert>
+
+
+    <resultMap type="timeTable" id="TabList">
+        <result property="tabId" column="tab_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="teaId" column="tea_id"/>
+        <result property="clasId" column="clas_id"/>
+        <result property="curId" column="cur_id"/>
+        <result property="tabTime" column="tab_time"/>
+        <result property="morning" column="morning"/>
+        <association property="classroom" javaType="Classroom">
+            <result property="roomId" column="room_id"/>
+            <result property="roomName" column="room_name"/>
+            <result property="projection" column="projection"/>
+            <result property="seatNum" column="seatnum"/>
+        </association>
+        <association property="teacher" javaType="Teacher">
+            <result property="teaId" column="tea_id"/>
+            <result property="teaName" column="tea_name"/>
+            <result property="teaMail" column="tea_mail"/>
+        </association>
+        <association property="classes" javaType="Classes">
+            <result property="clasId" column="clas_id"/>
+            <result property="clasName" column="clas_name"/>
+            <result property="clasNum" column="clas_num"/>
+            <result property="stage" column="stage"/>
+        </association>
+        <association property="curriculum" javaType="Curriculum">
+            <result property="curId" column="cur_id"/>
+            <result property="curName" column="cur_name"/>
+            <result property="stage" column="stage"/>
+            <result property="chapter" column="chapter"/>
+            <result property="curTime" column="cur_time"/>
+        </association>
+    </resultMap>
+
+
+
+    <!--修改课表-->
+    <update id="updateTable" parameterType="timeTable">
+        UPDATE timeTable
+        <trim prefix="set" suffixOverrides=",">
+            <if test="roomId!=null and roomId!=''">
+                room_id=#{roomId},
+            </if>
+            <if test="teaId!=null and teaId!=''">
+                tea_id=#{teaId},
+            </if>
+            <if test="curId!=null and curId!=''">
+                cur_id=#{curId},
+            </if>
+            <if test="clasId!=null and clasId!=''">
+                clas_id=#{clasId},
+            </if>
+            <if test="morning!=null and morning!=''">
+                morning=#{morning},
+            </if>
+        </trim>
+        where tab_id=#{tabId}
+    </update>
+
+
+    <!--根据id获取课表信息-->
+    <select id="selectTableById" resultMap="TabList" parameterType="int">
+    SELECT * FROM timeTable where tab_id=#{tabId}
+    </select>
+
+
+    <!--分页查询-->
+    <select id="selectTable" resultMap="TabList">
+        SELECT * FROM timetable INNER JOIN classes ON timetable.clas_id =classes.clas_id INNER JOIN classroom ON timetable.room_id=classroom.room_id INNER JOIN curriculum ON timetable.cur_id=curriculum.cur_id INNER JOIN teacher ON timetable.tea_id=teacher.tea_id
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="clasId != null and clasId!=''">
+                and timetable.clas_id=#{clasId}
+            </if>
+            <if test="teaId != null and teaId!=''">
+                and timetable.tea_id=#{teaId}
+            </if>
+            <if test="curId != null and curId!=''">
+                and timetable.cur_id=#{stage}
+            </if>
+            <if test="startTime != null and startTime!=''">
+                and timetable.tab_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime!=''">
+                and timetable.tab_time
+                &lt;= #{endTime}
+            </if>
+        </trim>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!--查询总数量-->
+    <select id="selectTableCount" resultType="int">
+    SELECT COUNT(1) FROM timetable
+    </select>
+
+    <!--查询全部-->
+    <select id="selectAll" resultMap="TabList">
+        SELECT * FROM timetable INNER JOIN classes ON timetable.clas_id =classes.clas_id INNER JOIN classroom ON timetable.room_id=classroom.room_id INNER JOIN curriculum ON timetable.cur_id=curriculum.cur_id INNER JOIN teacher ON timetable.tea_id=teacher.tea_id
+    </select>
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fanke.administration.mapper.ClassroomMapper">
+    <!--添加教室-->
+    <insert id="insertRoom" parameterType="classroom">
+    INSERT INTO classroom(room_name,projection,seatnum) values(#{roomName},#{projection},#{seatNum})
+    </insert>
+
+
+    <resultMap type="classroom" id="RoomList">
+        <result property="roomId" column="room_id"/>
+        <result property="roomName" column="room_name"/>
+        <result property="projection" column="projection"/>
+        <result property="seatNum" column="seatnum"/>
+        <result property="ups" column="ups"/>
+    </resultMap>
+
+
+    <!--修改教室-->
+    <update id="updateRoom" parameterType="classroom">
+        UPDATE classroom
+        <trim prefix="set" suffixOverrides=",">
+            <if test="roomName!=null and roomName!=''">
+                room_name=#{roomName},
+            </if>
+            <if test="projection==0 or projection==1">
+                projection=#{projection},
+            </if>
+            <if test="seatNum!=null and seatNum!=''">
+                seatnum=#{seatNum},
+            </if>
+            <if test="ups==0">
+                ups=#{ups},
+            </if>
+        </trim>
+        where room_id=#{roomId}
+    </update>
+
+
+    <!--根据id获取班级信息-->
+    <select id="selectRoomById" resultMap="RoomList" parameterType="int">
+    SELECT * FROM classroom where room_id=#{roomId}
+    </select>
+
+
+    <!--分页查询-->
+    <select id="selectRoom" resultMap="RoomList">
+        SELECT * FROM classroom
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="projection != null and projection!=''">
+                and projection=#{projection}
+            </if>
+            <if test="roomName != null and roomName!=''">
+                and room_name LIKE CONCAT('%',#{roomName},'%')
+            </if>
+            and ups=1
+        </trim>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!--查询总数量-->
+    <select id="selectRoomCount" resultType="int">
+    SELECT COUNT(1) FROM classroom
+    </select>
+
+    <!--查询全部数据-->
+    <select id="selectAll" resultMap="RoomList">
+        SELECT * FROM classroom
+    </select>
+</mapper>

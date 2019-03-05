@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fanke.administration.mapper.TeacherMapper">
+    <!--添加教师-->
+    <insert id="insertTeacher" parameterType="teacher">
+    INSERT INTO teacher(tea_name,tea_mail) values(#{teaName},#{teaMail})
+    </insert>
+
+
+    <resultMap type="teacher" id="TeaList">
+        <result property="teaId" column="tea_id"/>
+        <result property="teaName" column="tea_name"/>
+        <result property="teaMail" column="tea_mail"/>
+        <result property="ups" column="ups"/>
+    </resultMap>
+
+
+    <!--修改教师信息-->
+    <update id="updateTeacher" parameterType="teacher">
+        UPDATE teacher
+        <trim prefix="set" suffixOverrides=",">
+            <if test="teaMail!=null and teaMail!=''">
+                tea_mail=#{teaMail},
+            </if>
+            <if test="teaName!=null and teaName!=''">
+                tea_name=#{teaName},
+            </if>
+            <if test="ups==0">
+                ups=#{ups},
+            </if>
+        </trim>
+        where tea_id=#{teaId}
+    </update>
+
+
+    <!--根据id获取教员信息-->
+    <select id="selectTeacherById" resultMap="TeaList" parameterType="int">
+    SELECT * FROM teacher where tea_id=#{teaId}
+    </select>
+
+
+    <!--分页查询-->
+    <select id="selectTeacher" resultMap="TeaList">
+        SELECT * FROM teacher
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="teaName != null and teaName!=''">
+                and tea_name LIKE CONCAT('%',#{teaName},'%')
+            </if>
+            and ups=1
+        </trim>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!--查询总数量-->
+    <select id="selectTeaCount" resultType="int">
+        SELECT COUNT(1) FROM teacher
+    </select>
+
+    <!--查询全部-->
+    <select id="selectAll" resultMap="TeaList">
+        SELECT * FROM teacher
+    </select>
+</mapper>

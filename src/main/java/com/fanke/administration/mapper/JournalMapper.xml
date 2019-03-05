@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fanke.administration.mapper.JournalMapper">
+
+    <resultMap type="journal" id="JouList">
+        <result property="jouId" column="jou_id"/>
+        <result property="jouTime" column="jou_time"/>
+        <result property="content" column="content"/>
+        <result property="userId" column="user_id"/>
+        <association property="user" javaType="User">
+            <result property="userId" column="user_id"/>
+            <result property="userName" column="user_name"/>
+            <result property="userPwd" column="user_pwd"/>
+            <result property="userTime" column="user_time"/>
+            <result property="userMail" column="user_mail"/>
+        </association>
+    </resultMap>
+
+    <!--添加日志-->
+    <insert id="insertJou" parameterType="journal">
+    INSERT INTO journal(jou_time,user_id,content) values(#{jouTime},#{userId},#{content})
+    </insert>
+
+    <!--查询总数量-->
+    <select id="selectCount" resultType="int">
+    SELECT COUNT(1) FROM journal
+    </select>
+
+    <!--查询全部-->
+    <select id="selectAll" resultMap="JouList">
+        SELECT * FROM journal INNER JOIN USER ON journal.user_id=user.user_id
+    </select>
+
+</mapper>

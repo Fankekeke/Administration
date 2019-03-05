@@ -1,0 +1,345 @@
+
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<!--/meta 作为公共模版分离出去-->
+
+<title>添加班级 - H-ui.admin v3.1</title>
+<meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+<meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" /><link href="css/demo.css" rel="stylesheet" type="text/css" />
+    <script src="scripts/boot.js" type="text/javascript"></script>
+	<style>
+		body .mini-panel-header-inner
+		{
+			text-align:center;
+		}
+		.mini-panel .mini-panel-title
+		{
+			float:none;
+		}
+	</style>
+</head>
+<body>
+<article class="page-container">
+	<form th:action="@{/addTable}" method="post" class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>选择教室：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input id="btnEdit1" class="mini-buttonedit" onbuttonclick="onButtonEdit" name="username" textName="b"/>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>选择教员：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+                <input id="btnEdit2" class="mini-buttonedit" onbuttonclick="onButtonEdit1" name="username" textName="b"/>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>选择班级：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+                <input id="btnEdit3" class="mini-buttonedit" onbuttonclick="onButtonEdit2" name="username" textName="b"/>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>选择课程：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+                <input id="btnEdit4" class="mini-buttonedit" onbuttonclick="onButtonEdit3" name="username" textName="b"/>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>具体日期：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="date" placeholder="" name="tabTime">
+				<!--<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" style="width:120px;" name="tabTime">-->
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>具体时间：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" placeholder="" name="morning" id="time">
+			</div>
+		</div>
+		<input type="hidden" id="hid" name="roomId">
+		<input type="hidden" id="hid1" name="teaId">
+		<input type="hidden" id="hid2" name="clasId">
+		<input type="hidden" id="hid3" name="curId">
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-member-add").validate({
+		rules:{
+			username:{
+				required:true,
+				minlength:2,
+				maxlength:16
+			},
+			sex:{
+				required:true,
+			},
+			mobile:{
+				required:true,
+				isMobile:true,
+			},
+			email:{
+				required:true,
+				email:true,
+			},
+			uploadfile:{
+				required:true,
+			},
+			
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+        submitHandler:function(form){
+            var params = {content:"添加课表信息"};  //参数，注意参数名要注意和后台方法参数名要一致
+            $.ajax({
+                type:"GET",  //请求方式
+                url:"/addJour",  //请求路径：页面/方法名字
+                data: params,     //参数
+                dataType:"text",
+                contentType:"application/json; charset=utf-8",
+            });
+            $(form).ajaxSubmit({
+                type: 'post',
+                url: "/addTable" ,
+                success: function(data){
+                    layer.msg('添加成功!',{icon:1,time:1000});
+                    //removeIframe();
+                    setTimeout(function(){
+                        window.location.href="/tablelist.html";
+                    }, 1500);
+
+                },
+                error: function(XmlHttpRequest, textStatus, errorThrown){
+                    layer.msg('error!',{icon:1,time:1000});
+                }
+            });
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.$('.btn-refresh').click();
+            // parent.layer.close(index);
+        }
+	});
+});
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+
+<script type="text/javascript">
+
+
+    mini.parse();
+
+    function onButtonEdit(e) {
+        var btnEdit = this;
+        mini.open({
+            url:"SelectGridWindow.html",
+            title: "选择列表",
+            width: '50%',
+            height: '40%',
+            showMaxButton: true,
+            onload: function () {
+                var iframe = this.getIFrameEl();
+//                    setTimeout(function () {
+//                    }, 100);
+//                    alert(iframe);
+            },
+            ondestroy: function (action) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/getroom',
+                    dataType: 'json',
+                    success: function(data){
+                        $(function () {
+                            $(".mini-buttonedit-input").eq(0).val(data.roomName);
+                            $("#hid").val(data.roomId);
+                        })
+
+                    },
+                });
+                //if (action == "close") return false;
+                //alert(1);
+                if (action == "ok") {
+                    var iframe = this.getIFrameEl();
+                    var data = iframe.contentWindow.GetData();
+                    data = mini.clone(data);    //必须
+                    if (data) {
+
+                        btnEdit.setValue(data.id);
+                        btnEdit.setText(data.name);
+                    }
+                }
+            }
+        });
+    }
+
+    function onButtonEdit1(e) {
+        var btnEdit1 = this;
+        mini.open({
+            url:"SelectGridWindow1.html",
+            title: "选择列表",
+            width: '50%',
+            height: '40%',
+            showMaxButton: true,
+            onload: function () {
+                var iframe = this.getIFrameEl();
+//                    setTimeout(function () {
+//                    }, 100);
+//                    alert(iframe);
+            },
+            ondestroy: function (action) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/gettea',
+                    dataType: 'json',
+                    success: function(data){
+                        $(".mini-buttonedit-input").eq(1).val(data.teaName);
+                        $("#hid1").val(data.teaId);
+                    },
+                });
+                //if (action == "close") return false;
+                //alert(1);
+                if (action == "ok") {
+                    var iframe = this.getIFrameEl();
+                    var data = iframe.contentWindow.GetData();
+                    data = mini.clone(data);    //必须
+                    if (data) {
+                        btnEdit1.setValue(data.id);
+                        btnEdit1.setText(data.name);
+                    }
+                }
+            }
+        });
+    }
+
+
+    function onButtonEdit2(e) {
+        var btnEdit2 = this;
+        mini.open({
+            url:"SelectGridWindow2.html",
+            title: "选择列表",
+            width: '50%',
+            height: '40%',
+            showMaxButton: true,
+            onload: function () {
+                var iframe = this.getIFrameEl();
+//                    setTimeout(function () {
+//                    }, 100);
+//                    alert(iframe);
+            },
+            ondestroy: function (action) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/getclas',
+                    dataType: 'json',
+                    success: function(data){
+                        $(".mini-buttonedit-input").eq(2).val(data.clasName);
+                        $("#hid2").val(data.clasId);
+                    },
+                });
+                //if (action == "close") return false;
+                //alert(1);
+                if (action == "ok") {
+                    var iframe = this.getIFrameEl();
+                    var data = iframe.contentWindow.GetData();
+                    data = mini.clone(data);    //必须
+                    if (data) {
+                        btnEdit2.setValue(data.id);
+                        btnEdit2.setText(data.name);
+                    }
+                }
+            }
+        });
+    }
+
+
+    function onButtonEdit3(e) {
+        var btnEdit3 = this;
+        mini.open({
+            url:"SelectGridWindow3.html",
+            title: "选择列表",
+            width: '50%',
+            height: '40%',
+            showMaxButton: true,
+            onload: function () {
+                var iframe = this.getIFrameEl();
+//                    setTimeout(function () {
+//                    }, 100);
+//                    alert(iframe);
+            },
+            ondestroy: function (action) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/getcur',
+                    dataType: 'json',
+                    success: function(data){
+                        $(".mini-buttonedit-input").eq(3).val(data.chapter);
+                        $("#hid3").val(data.curId);
+                    },
+                });
+                //if (action == "close") return false;
+                //alert(1);
+                if (action == "ok") {
+                    var iframe = this.getIFrameEl();
+                    var data = iframe.contentWindow.GetData();
+                    data = mini.clone(data);    //必须
+                    if (data) {
+                        btnEdit3.setValue(data.id);
+                        btnEdit3.setText(data.name);
+                    }
+                }
+            }
+        });
+    }
+
+
+
+</script>
+</body>
+</html>

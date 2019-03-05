@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fanke.administration.mapper.UserMapper">
+    <!--用户注册-->
+    <insert id="insertUser" parameterType="user">
+    INSERT INTO USER(user_name,user_pwd,user_time,user_mail) values(#{userName},#{userPwd},#{userTime},#{userMail})
+    </insert>
+
+
+    <resultMap type="user" id="UserList">
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPwd" column="user_pwd"/>
+        <result property="userTime" column="user_time"/>
+        <result property="userMail" column="user_mail"/>
+    </resultMap>
+
+
+
+    <!--修改密码-->
+    <update id="updateUserPwd" parameterType="user">
+        UPDATE user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userPwd!=null and userPwd!=''">
+                user_pwd=#{userPwd},
+            </if>
+            <if test="userMail!=null and userMail!=''">
+                user_mail=#{userMail},
+            </if>
+            <if test="userName!=null and userName!=''">
+                user_name=#{userName},
+            </if>
+        </trim>
+        where user_id=#{userId}
+    </update>
+
+    <update id="updataPwd" parameterType="user">
+        UPDATE user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userPwd!=null and userPwd!=''">
+                user_pwd=#{userPwd},
+            </if>
+        </trim>
+        where user_id=#{userId}
+    </update>
+
+
+    <!--根据id获取用户-->
+    <select id="selectUserById" resultMap="UserList" parameterType="int">
+    SELECT * FROM user where user_id=#{userId}
+    </select>
+
+    <!--查看用户名是否重复-->
+    <select id="selectUserCount" resultType="int">
+    SELECT COUNT(1) FROM user WHERE usesr_name=#{userName}
+    </select>
+
+
+    <!--用户登录-->
+    <select id="login" resultMap="UserList">
+    SELECT * FROM user where user_name=#{userName} AND user_pwd=#{userPwd}
+    </select>
+
+    <!--分页查询-->
+    <select id="selectUserByFenye" resultMap="UserList">
+        SELECT * FROM user
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="userName != null and userName!=''">
+                and user_name LIKE CONCAT('%',#{userName},'%')
+            </if>
+        </trim>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!--查询总数量-->
+    <select id="selectUsersCount" resultType="int">
+    SELECT COUNT(1) FROM user WHERE user_time != ""
+    </select>
+</mapper>
