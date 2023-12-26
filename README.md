@@ -1,9 +1,5 @@
-###### 永中教务管理平台
-##### 永中教务管理平台
-#### 永中教务管理平台
-### 永中教务管理平台
-## 永中教务管理平台
-# 永中教务管理平台
+#### 教务管理平台
+
 ![](https://wx3.sinaimg.cn/mw1024/005SohBoly1g0s5rlyx1rj31hc0te74u.jpg)
 <br/>
 ![](https://wx2.sinaimg.cn/mw1024/005SohBoly1g0s5rlyizbj31hc0te74z.jpg)
